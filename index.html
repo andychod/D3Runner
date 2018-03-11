@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
@@ -10,7 +10,7 @@
          text-anchor: middle;
        }   
        .arc path {
-         stroke: #fff;
+         stroke: #000;
        }  
     </style>
   <head>
@@ -25,7 +25,9 @@
           radius = Math.min(width, height) / 2;   
 
       var color = d3.scale.ordinal()
-                    .range(["#1f77b4", "#ff7f0e", "#2ca02c", "#ff9896", "#9467bd", "#e377c2", "#bcbd22"]);   
+                    .range(["#ff7f0e","#bcbd22"]); 
+                    //.range(["#1f77b4", "#ff7f0e", "#2ca02c", "#ff9896", "#9467bd", "#e377c2", "#bcbd22"]);   
+      var ccolor = ["#ff7f0e","#bcbd22"];
 
       var arc = d3.svg.arc()
                   .outerRadius(radius - 10)
@@ -63,12 +65,34 @@
         .text(function(d) { return d.data; });
 
       var xx = 0;
+      var yy = 3;
+
+      var tragger = 0; // 0->沒轉，1->轉
         
       function ShowGraph()
       {   
+        tragger++;
+        tragger%=2;
+        console.log(tragger);
+        if(tragger==1)
+        {
+          changeColor()
+        }
+      }
+
+      function changeColor()
+      {
+        if(tragger==1)
+        {
+          g[0][xx].childNodes[0].style.fill= "#e377c2";
+          g[0][yy].childNodes[0].style.fill= ccolor[yy%2];
+          xx +=1; yy +=1;
+          xx = xx % 4; yy = yy % 4;
         
-        g[0][xx].childNodes[0].style.fill= "#bcbd22";
-        xx +=1;
+          setTimeout(function(){
+            changeColor();
+          },80);
+        }
       }
 
     </script>
